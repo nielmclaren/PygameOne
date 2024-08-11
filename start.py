@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 
-import random
 import pygame
-from mob import Mob
+from world import World
 
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
@@ -10,8 +9,7 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
-mob = Mob(pygame.Vector2(random.random() * screen.get_width(), random.random() * screen.get_height()))
+world = World((screen.get_width(), screen.get_height()))
 
 while running:
   for event in pygame.event.get():
@@ -23,8 +21,8 @@ while running:
 
   screen.fill("purple")
 
-  pygame.draw.circle(screen, "cyan", player_pos, 40)
-  pygame.draw.circle(screen, "red", mob.pos, 40)
+  pygame.draw.circle(screen, "cyan", world.player_pos, 40)
+  pygame.draw.circle(screen, "red", world.mob.pos, 40)
 
   keys = pygame.key.get_pressed()
   direction = pygame.Vector2()
@@ -36,11 +34,9 @@ while running:
     direction.x -= 1
   if keys[pygame.K_d]:
     direction.x += 1
+  world.set_controller(direction.normalize() if direction.magnitude() else direction)
 
-  if direction.magnitude():
-    player_pos += direction.normalize() * 300 * dt
-
-  mob.step(player_pos, dt)
+  world.step(dt)
 
   pygame.display.flip()
 
