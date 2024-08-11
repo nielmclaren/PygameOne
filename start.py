@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
+import random
 import pygame
+from mob import Mob
 
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
@@ -9,6 +11,7 @@ running = True
 dt = 0
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+mob = Mob(pygame.Vector2(random.random() * screen.get_width(), random.random() * screen.get_height()))
 
 while running:
   for event in pygame.event.get():
@@ -21,6 +24,7 @@ while running:
   screen.fill("purple")
 
   pygame.draw.circle(screen, "cyan", player_pos, 40)
+  pygame.draw.circle(screen, "red", mob.pos, 40)
 
   keys = pygame.key.get_pressed()
   direction = pygame.Vector2()
@@ -35,6 +39,8 @@ while running:
 
   if direction.magnitude():
     player_pos += direction.normalize() * 300 * dt
+
+  mob.step(player_pos, dt)
 
   pygame.display.flip()
 
