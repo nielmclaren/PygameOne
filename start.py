@@ -11,6 +11,10 @@ dt = 0
 
 world = World((screen.get_width(), screen.get_height()))
 
+background_color = pygame.Color("purple")
+player_color = pygame.Color("cyan")
+prediction_color = player_color.lerp(background_color, 0.9)
+
 while running:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
@@ -18,11 +22,6 @@ while running:
     elif event.type == pygame.KEYDOWN:
       if event.key == pygame.K_ESCAPE:
         running = False
-
-  screen.fill("purple")
-
-  pygame.draw.circle(screen, "cyan", world.player_pos, 40)
-  pygame.draw.circle(screen, "red", world.mob.pos, 40)
 
   keys = pygame.key.get_pressed()
   direction = pygame.Vector2()
@@ -35,6 +34,12 @@ while running:
   if keys[pygame.K_d]:
     direction.x += 1
   world.set_controller(direction.normalize() if direction.magnitude() else direction)
+
+  screen.fill(background_color)
+
+  pygame.draw.circle(screen, prediction_color, world.estimate_player_pos(500), 40)
+  pygame.draw.circle(screen, player_color, world.player_pos, 40)
+  pygame.draw.circle(screen, "red", world.mob.pos, 40)
 
   world.step(dt)
 
