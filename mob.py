@@ -2,6 +2,8 @@ import pygame
 from mob_state import MobState
 
 class Mob:
+    MAX_SPEED = 400
+
     def __init__(self, pos):
         self.pos = pos
         self.state = MobState.RESTING
@@ -23,7 +25,7 @@ class Mob:
             self.__change_state_resting(world, dt)
 
         direction = (self.target_pos - self.pos).normalize()
-        self.pos += direction * 400 * dt
+        self.pos += direction * Mob.MAX_SPEED * dt
     
     def __change_state_moving(self, world, dt):
         self.state = MobState.MOVING

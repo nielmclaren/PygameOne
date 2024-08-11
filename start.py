@@ -38,7 +38,7 @@ while running:
   screen.fill(background_color)
 
   pygame.draw.circle(screen, prediction_color, world.estimate_player_pos(500), 40)
-  pygame.draw.circle(screen, player_color, world.player_pos, 40)
+  pygame.draw.circle(screen, player_color, world.player.pos, 40)
   pygame.draw.circle(screen, "red", world.mob.pos, 40)
 
   world.step(dt)
