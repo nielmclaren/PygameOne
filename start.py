@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
 import pygame
+from mob import Mob
+from player import Player
 from world import World
 
 pygame.init()
@@ -38,8 +40,8 @@ while running:
   screen.fill(background_color)
 
   pygame.draw.circle(screen, prediction_color, world.estimate_player_pos(500), 40)
-  pygame.draw.circle(screen, player_color, world.player.pos, 40)
-  pygame.draw.circle(screen, "red", world.mob.pos, 40)
+  pygame.draw.circle(screen, player_color, world.player.pos(), Player.RADIUS)
+  pygame.draw.circle(screen, "red", world.mob.pos(), Mob.RADIUS)
 
   world.step(dt)
 

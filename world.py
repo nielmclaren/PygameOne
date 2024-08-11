@@ -14,9 +14,17 @@ class World:
         self.controller_direction = direction
 
     def estimate_player_pos(self, delay):
-        return self.player.pos + self.controller_direction * Player.MAX_SPEED * delay / 1000
-    
+        return self.player.pos() + self.controller_direction * Player.MAX_SPEED * delay / 1000
+
     def step(self, dt):
         self.player.step(self, dt)
         self.mob.step(self, dt)
-    
+
+        self._handle_collisions()
+
+    def _handle_collisions(self):
+        delta = self.player.pos() - self.mob.pos()
+        if (delta.magnitude() < Player.RADIUS + Mob.RADIUS):
+            print("collision")
+            self.player.handle_collision(self, self.mob)
+            self.mob.handle_collision(self, self.player)
